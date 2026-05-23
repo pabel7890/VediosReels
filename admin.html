@@ -79,8 +79,7 @@ window.login = function() {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       alert("Login Successful!");
-      // এখানে তুমি ড্যাশবোর্ড পেজে রিডাইরেক্ট করতে পারো
-      // window.location.href = "dashboard.html";
+       window.location.href = "dashboard.html";
     })
     .catch((err) => {
       error.textContent = err.message;
