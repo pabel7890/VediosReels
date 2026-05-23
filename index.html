@@ -20,7 +20,7 @@
   .btn-register:disabled {opacity: 0.6; cursor: not-allowed;}
   .login-link {text-align: center; margin-top: 20px; color: #fbbc05; font-size: 14px; cursor: pointer;}
   .error {color: #ff4444; font-size: 13px; margin-top: -10px; margin-bottom: 10px; display: none;}
-  .success {color: #00ff88; font-size: 13px; margin-top: -10px; margin-bottom: 10px; display: none;}
+  .success {color: #00ff88; font-size: 16px; margin-top: 10px; margin-bottom: 10px; text-align: center; font-weight: 600; display: none;}
 </style>
 </head>
 <body>
@@ -44,7 +44,7 @@
 
   <button class="btn-register" id="registerBtn">Register</button>
   <div class="success" id="successMsg"></div>
-  <div class="login-link">Already have an account? Login</div>
+  <div class="login-link" id="loginLink">Already have an account? Login</div>
 </div>
 
 <script type="module">
@@ -85,24 +85,4 @@
     btn.textContent = "Creating account...";
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      successMsg.textContent = "Registration Successful!";
-      successMsg.style.display = "block";
-      document.getElementById("email").value = "";
-      document.getElementById("password").value = "";
-    } catch (error) {
-      if(error.code.includes("email")) {
-        emailError.textContent = error.message;
-        emailError.style.display = "block";
-      } else {
-        passwordError.textContent = error.message;
-        passwordError.style.display = "block";
-      }
-    }
-    
-    btn.disabled = false;
-    btn.textContent = "Register";
-  });
-</script>
-</body>
-</html>
+     
