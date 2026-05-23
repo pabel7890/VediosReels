@@ -79,7 +79,7 @@ window.login = function() {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       alert("Login Successful!");
-       window.location.href = "/VediosReels/index.html";
+       window.location.href = "dashboard.html";
     })
     .catch((err) => {
       error.textContent = err.message;
