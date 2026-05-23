@@ -6,7 +6,7 @@
 <title>VediosReels - Register</title>
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif;}
-  body {background: #0a0a0a; color: #fff; min-height: 100vh; position: relative; overflow-x: hidden;}
+  body {background: #0a0a0a; color: #fff; min-height: 100vh; position: relative;}
   .overlay {position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(10,10,10,0.2) 0%, rgba(10,10,10,1) 60%); z-index: 1;}
   .container {position: relative; z-index: 2; padding: 20px; max-width: 450px; margin: 0 auto;}
   .logo {text-align: center; margin: 40px 0 40px;}
@@ -18,17 +18,21 @@
   .input-group input::placeholder {color: #666;}
   .btn-register {width: 100%; padding: 15px; background: #fbbc05; color: #000; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer;}
   .btn-register:disabled {opacity: 0.6; cursor: not-allowed;}
-  .login-link {text-align: center; margin-top: 20px; color: #fbbc05; font-size: 14px; cursor: pointer;}
   .error {color: #ff4444; font-size: 13px; margin-top: -10px; margin-bottom: 10px; display: none;}
-  .success {color: #00ff88; font-size: 16px; margin-top: 10px; margin-bottom: 10px; text-align: center; font-weight: 600; display: none;}
+  .success {color: #00ff88; font-size: 16px; margin: 10px 0; text-align: center; font-weight: 600; display: none;}
 </style>
 </head>
 <body>
 <div class="overlay"></div>
 <div class="container">
   <div class="logo"><div>VR</div></div>
-  <h1>Welcome to VediosReels!</h1>
-  <p class="subtitle">Get started quickly on your exciting journey</p>
+  <h1>Create Account</h1>
+  <p class="subtitle">Join VediosReels now</p>
+
+  <div class="input-group">
+    <span>📱</span>
+    <input type="tel" id="phone" placeholder="+8801XXXXXXXXX">
+  </div>
 
   <div class="input-group">
     <span>📧</span>
@@ -38,13 +42,17 @@
 
   <div class="input-group">
     <span>🔒</span>
-    <input type="password" id="password" placeholder="Enter your password">
+    <input type="password" id="password" placeholder="Enter password">
+  </div>
+
+  <div class="input-group">
+    <span>🔒</span>
+    <input type="password" id="confirmPassword" placeholder="Confirm password">
   </div>
   <div class="error" id="passwordError"></div>
 
   <button class="btn-register" id="registerBtn">Register</button>
   <div class="success" id="successMsg"></div>
-  <div class="login-link" id="loginLink">Already have an account? Login</div>
 </div>
 
 <script type="module">
@@ -66,6 +74,7 @@
   document.getElementById("registerBtn").addEventListener("click", async () => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
     const emailError = document.getElementById("emailError");
     const passwordError = document.getElementById("passwordError");
     const successMsg = document.getElementById("successMsg");
@@ -75,8 +84,20 @@
     passwordError.style.display = "none";
     successMsg.style.display = "none";
 
-    if(!email || !password){
+    if(!email || !password || !confirmPassword){
       passwordError.textContent = "Please fill all fields";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    if(password !== confirmPassword){
+      passwordError.textContent = "Passwords do not match";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    if(password.length < 6){
+      passwordError.textContent = "Password must be at least 6 characters";
       passwordError.style.display = "block";
       return;
     }
@@ -85,4 +106,26 @@
     btn.textContent = "Creating account...";
 
     try {
-     
+      await createUserWithEmailAndPassword(auth, email, password);
+      successMsg.textContent = "Registration Successful!";
+      successMsg.style.display = "block";
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("confirmPassword").value = "";
+      document.getElementById("phone").value = "";
+    } catch (error) {
+      if(error.code.includes("email")) {
+        emailError.textContent = error.message;
+        emailError.style.display = "block";
+      } else {
+        passwordError.textContent = error.message;
+        passwordError.style.display = "block";
+      }
+    }
+    
+    btn.disabled = false;
+    btn.textContent = "Register";
+  });
+</script>
+</body>
+</html>
