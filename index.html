@@ -46,8 +46,63 @@
   <div class="success" id="successMsg"></div>
   <div class="login-link">Already have an account? Login</div>
 </div>
-</body>
-</html>  <div class="error" id="emailError"></div>
 
-  <div class="input-group">
-    <span>🔒</span>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD3i_ow0g3LSAPiF7FMFR4v0yMxgAAUN9o",
+    authDomain: "vediosreels-17b90.firebaseapp.com",
+    projectId: "vediosreels-17b90",
+    storageBucket: "vediosreels-17b90.firebasestorage.app",
+    messagingSenderId: "485226836797",
+    appId: "1:485226836797:web:8e459911429199b49ccb54"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  document.getElementById("registerBtn").addEventListener("click", async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const successMsg = document.getElementById("successMsg");
+    const btn = document.getElementById("registerBtn");
+
+    emailError.style.display = "none";
+    passwordError.style.display = "none";
+    successMsg.style.display = "none";
+
+    if(!email || !password){
+      passwordError.textContent = "Please fill all fields";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Creating account...";
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      successMsg.textContent = "Registration Successful!";
+      successMsg.style.display = "block";
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+    } catch (error) {
+      if(error.code.includes("email")) {
+        emailError.textContent = error.message;
+        emailError.style.display = "block";
+      } else {
+        passwordError.textContent = error.message;
+        passwordError.style.display = "block";
+      }
+    }
+    
+    btn.disabled = false;
+    btn.textContent = "Register";
+  });
+</script>
+</body>
+</html>
