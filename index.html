@@ -7,34 +7,351 @@
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif;}
   body {background: #0a0a0a; color: #fff; min-height: 100vh; position: relative;}
-  .overlay {position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(10,10,10,0.2) 0%, rgba(10,10,10,1) 60%); z-index: 1;}
-  .container {position: relative; z-index: 2; padding: 20px; max-width: 450px; margin: 0 auto;}
-  .logo {text-align: center; margin: 40px 0 40px;}
-  .logo div {width: 80px; height: 80px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, #00ff88, #00ccff, #ff00ff); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 900; color: #000;}
+ .overlay {position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(10,10,10,0.2) 0%, rgba(10,10,10,1) 60%); z-index: 1;}
+ .container {position: relative; z-index: 2; padding: 20px; max-width: 450px; margin: 0 auto;}
+ .logo {text-align: center; margin: 40px 0 40px;}
+ .logo div {width: 80px; height: 80px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, #00ff88, #00ccff, #ff00ff); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 900; color: #000;}
   h1 {font-size: 26px; font-weight: 700; margin-bottom: 8px;}
-  .subtitle {font-size: 14px; color: #aaa; margin-bottom: 30px;}
-  
-  .input-group {background: #1e1e1e; border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;}
-  .input-group input {background: transparent; border: none; outline: none; color: #fff; flex: 1; font-size: 15px;}
-  .input-group input::placeholder {color: #666;}
-  
-  .btn-primary {width: 100%; padding: 15px; background: #fbbc05; color: #000; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer;}
-  .btn-primary:disabled {opacity: 0.6; cursor: not-allowed;}
-  
-  .btn-secondary {width: 100%; padding: 15px; background: transparent; color: #fff; border: 1px solid #555; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 12px; cursor: pointer;}
-  .btn-secondary:hover {border-color: #888; background: #1a1a1a;}
-  
-  .auth-links {text-align: center; margin-top: 20px;}
-  .auth-links p {color: #aaa; font-size: 14px; margin-bottom: 10px;}
-  .auth-links a {color: #4db8ff; text-decoration: none; font-size: 14px; cursor: pointer;}
-  .auth-links a:hover {text-decoration: underline;}
-  
-  .error {color: #ff4444; font-size: 13px; margin-top: -10px; margin-bottom: 10px; display: none;}
-  .success {color: #00ff88; font-size: 16px; margin: 10px 0; text-align: center; font-weight: 600; display: none;}
-  .hidden {display: none;}
+ .subtitle {font-size: 14px; color: #aaa; margin-bottom: 30px;}
+
+ .input-group {background: #1e1e1e; border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;}
+ .input-group input {background: transparent; border: none; outline: none; color: #fff; flex: 1; font-size: 15px;}
+ .input-group input::placeholder {color: #666;}
+
+ .btn-primary {width: 100%; padding: 15px; background: #fbbc05; color: #000; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer;}
+ .btn-primary:disabled {opacity: 0.6; cursor: not-allowed;}
+
+ .btn-secondary {width: 100%; padding: 15px; background: transparent; color: #fff; border: 1px solid #555; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 12px; cursor: pointer;}
+ .btn-secondary:hover {border-color: #888; background: #1a1a1a;}
+
+ .auth-links {text-align: center; margin-top: 20px;}
+ .auth-links p {color: #aaa; font-size: 14px; margin-bottom: 10px;}
+ .auth-links a {color: #4db8ff; text-decoration: none; font-size: 14px; cursor: pointer;}
+ .auth-links a:hover {text-decoration: underline;}
+
+ .error {color: #ff4444; font-size: 13px; margin-top: -10px; margin-bottom: 10px; display: none;}
+ .success {color: #00ff88; font-size: 16px; margin: 10px 0; text-align: center; font-weight: 600; display: none;}
+ .hidden {display: none;}
 </style>
 </head>
 <body>
+<div class="overlay"></div>
+<div class="container">
+  <div class="logo"><div>VR</div></div>
+
+  <!-- Register Form -->
+  <div id="registerForm">
+    <h1>Create Account</h1>
+    <p class="subtitle">Join VediosReels now</p>
+
+    <div class="input-group">
+      <span>📱</span>
+      <input type="tel" id="regPhone" placeholder="+8801XXXXXXXXX">
+    </div>
+
+    <div class="input-group">
+      <span>📧</span>
+      <input type="email" id="regEmail" placeholder="Enter your email">
+    </div>
+    <div class="error" id="regEmailError"></div>
+
+    <div class="input-group">
+      <span>🔒</span>
+      <input type="password" id="regPassword" placeholder="Enter password">
+    </div>
+
+    <div class="input-group">
+      <span>🔒</span>
+      <input type="password" id="regConfirmPassword" placeholder="Confirm password">
+    </div>
+    <div class="error" id="regPasswordError"></div>
+
+    <button class="btn-primary" id="registerBtn">Register</button>
+    <div class="success" id="regSuccessMsg"></div>
+
+    <div class="auth-links">
+      <p>Already have an account?</p>
+      <button class="btn-secondary" id="showLoginBtn">Login</button>
+    </div>
+  </div>
+
+  <!-- Login Form -->
+  <div id="loginForm" class="hidden">
+    <h1>Welcome Back</h1>
+    <p class="subtitle">Login to your account</p>
+
+    <div class="input-group">
+      <span>📧</span>
+      <input type="email" id="loginEmail" placeholder="Enter your email">
+    </div>
+
+    <div class="input-group">
+      <span>🔒</span>
+      <input type="password" id="loginPassword" placeholder="Enter password">
+    </div>
+    <div class="error" id="loginError"></div>
+
+    <button class="btn-primary" id="loginBtn">Login</button>
+
+    <div class="auth-links">
+      <p><a id="forgotPassLink">Forgot Password?</a></p>
+      <p>Don't have an account?</p>
+      <button class="btn-secondary" id="showRegisterBtn">Create Account</button>
+    </div>
+  </div>
+
+  <!-- Reset Password Form - OTP System -->
+  <div id="resetForm" class="hidden">
+    <h1>Reset Password</h1>
+    <p class="subtitle">Enter the 6-digit code from your email</p>
+
+    <div class="input-group">
+      <span>🔑</span>
+      <input type="text" id="resetCode" placeholder="Enter OTP code" maxlength="6">
+    </div>
+
+    <div class="input-group">
+      <span>🔒</span>
+      <input type="password" id="newPassword" placeholder="Enter new password">
+    </div>
+
+    <div class="input-group">
+      <span>🔒</span>
+      <input type="password" id="confirmNewPassword" placeholder="Confirm new password">
+    </div>
+    <div class="error" id="resetError"></div>
+    <div class="success" id="resetSuccess"></div>
+
+    <button class="btn-primary" id="resetBtn">Reset Password</button>
+    <button class="btn-secondary" id="backToLoginBtn">Back to Login</button>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    verifyPasswordResetCode,
+    confirmPasswordReset
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD3i_ow0g3LSAPiF7FMFR4v0yMxgAAUN9o",
+    authDomain: "vediosreels-17b90.firebaseapp.com",
+    projectId: "vediosreels-17b90",
+    storageBucket: "vediosreels-17b90.firebasestorage.app",
+    messagingSenderId: "485226836797",
+    appId: "1:485226836797:web:8e459911429199b49ccb54"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const registerForm = document.getElementById("registerForm");
+  const loginForm = document.getElementById("loginForm");
+  const resetForm = document.getElementById("resetForm");
+
+  // URL চেক করো reset মোডে আছে কিনা
+  const urlParams = new URLSearchParams(window.location.search);
+  const mode = urlParams.get('mode');
+  const oobCode = urlParams.get('oobCode');
+
+  if(mode === 'reset' && oobCode) {
+    registerForm.classList.add("hidden");
+    loginForm.classList.add("hidden");
+    resetForm.classList.remove("hidden");
+    document.getElementById("resetCode").value = oobCode;
+  }
+
+  // Toggle forms
+  document.getElementById("showLoginBtn").onclick = () => {
+    registerForm.classList.add("hidden");
+    loginForm.classList.remove("hidden");
+  };
+
+  document.getElementById("showRegisterBtn").onclick = () => {
+    loginForm.classList.add("hidden");
+    registerForm.classList.remove("hidden");
+  };
+
+  document.getElementById("backToLoginBtn").onclick = () => {
+    window.location.href = window.location.pathname;
+  };
+
+  // Register
+  document.getElementById("registerBtn").addEventListener("click", async () => {
+    const email = document.getElementById("regEmail").value;
+    const password = document.getElementById("regPassword").value;
+    const confirmPassword = document.getElementById("regConfirmPassword").value;
+    const emailError = document.getElementById("regEmailError");
+    const passwordError = document.getElementById("regPasswordError");
+    const successMsg = document.getElementById("regSuccessMsg");
+    const btn = document.getElementById("registerBtn");
+
+    emailError.style.display = "none";
+    passwordError.style.display = "none";
+    successMsg.style.display = "none";
+
+    if(!email ||!password ||!confirmPassword){
+      passwordError.textContent = "Please fill all fields";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    if(password!== confirmPassword){
+      passwordError.textContent = "Passwords do not match";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    if(password.length < 6){
+      passwordError.textContent = "Password must be at least 6 characters";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Creating account...";
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      successMsg.textContent = "Registration Successful! Now login.";
+      successMsg.style.display = "block";
+      setTimeout(() => {
+        registerForm.classList.add("hidden");
+        loginForm.classList.remove("hidden");
+        document.getElementById("loginEmail").value = email;
+      }, 1500);
+    } catch (error) {
+      if(error.code.includes("email")) {
+        emailError.textContent = error.message;
+        emailError.style.display = "block";
+      } else {
+        passwordError.textContent = error.message;
+        passwordError.style.display = "block";
+      }
+    }
+
+    btn.disabled = false;
+    btn.textContent = "Register";
+  });
+
+  // Login
+  document.getElementById("loginBtn").addEventListener("click", async () => {
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+    const loginError = document.getElementById("loginError");
+    const btn = document.getElementById("loginBtn");
+
+    loginError.style.display = "none";
+
+    if(!email ||!password){
+      loginError.textContent = "Enter email and password";
+      loginError.style.display = "block";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Logging in...";
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = "/VediosReels/dashboard.html";
+    } catch (error) {
+      loginError.textContent = error.message;
+      loginError.style.display = "block";
+    }
+
+    btn.disabled = false;
+    btn.textContent = "Login";
+  });
+
+  // Forgot Password - OTP পাঠাবে
+  document.getElementById("forgotPassLink").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("loginEmail").value;
+    const loginError = document.getElementById("loginError");
+
+    if(!email){
+      loginError.textContent = "Enter your email first";
+      loginError.style.display = "block";
+      return;
+    }
+
+    try {
+      const actionCodeSettings = {
+        url: window.location.href.split('?')[0] + '?mode=reset', // OTP ভেরিফাই এই পেজেই হবে
+        handleCodeInApp: true
+      };
+
+      await sendPasswordResetEmail(auth, email, actionCodeSettings);
+      loginError.style.color = "#00ff88";
+      loginError.textContent = "Reset code sent! Check your email.";
+      loginError.style.display = "block";
+      loginError.style.color = "#ff4444";
+    } catch (error) {
+      loginError.textContent = error.message;
+      loginError.style.display = "block";
+    }
+  });
+
+  // Reset Password with OTP
+  document.getElementById("resetBtn").addEventListener("click", async () => {
+    const code = document.getElementById("resetCode").value;
+    const newPassword = document.getElementById("newPassword").value;
+    const confirmNewPassword = document.getElementById("confirmNewPassword").value;
+    const resetError = document.getElementById("resetError");
+    const resetSuccess = document.getElementById("resetSuccess");
+    const btn = document.getElementById("resetBtn");
+
+    resetError.style.display = "none";
+    resetSuccess.style.display = "none";
+
+    if(!code ||!newPassword ||!confirmNewPassword){
+      resetError.textContent = "Please fill all fields";
+      resetError.style.display = "block";
+      return;
+    }
+
+    if(newPassword!== confirmNewPassword){
+      resetError.textContent = "Passwords do not match";
+      resetError.style.display = "block";
+      return;
+    }
+
+    if(newPassword.length < 6){
+      resetError.textContent = "Password must be at least 6 characters";
+      resetError.style.display = "block";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Resetting...";
+
+    try {
+      await verifyPasswordResetCode(auth, code);
+      await confirmPasswordReset(auth, code, newPassword);
+
+      resetSuccess.textContent = "Password reset successful! Redirecting to login...";
+      resetSuccess.style.display = "block";
+
+      setTimeout(() => {
+        window.location.href = window.location.pathname;
+      }, 2000);
+    } catch (error) {
+      resetError.textContent = "Invalid or expired code. Request a new one.";
+      resetError.style.display = "block";
+    }
+
+    btn.disabled = false;
+    btn.textContent = "Reset Password";
+  });
+</script>
+</body>
+</html><body>
 <div class="overlay"></div>
 <div class="container">
   <div class="logo"><div>VR</div></div>
