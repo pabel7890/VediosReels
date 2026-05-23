@@ -18,6 +18,15 @@
   .input-group input::placeholder {color: #666;}
   .btn-register {width: 100%; padding: 15px; background: #fbbc05; color: #000; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer;}
   .btn-register:disabled {opacity: 0.6; cursor: not-allowed;}
+  
+  /* নতুন স্টাইল */
+  .btn-login {width: 100%; padding: 15px; background: transparent; color: #fff; border: 1px solid #555; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 12px; cursor: pointer;}
+  .btn-login:hover {border-color: #888; background: #1a1a1a;}
+  .auth-links {text-align: center; margin-top: 20px;}
+  .auth-links p {color: #aaa; font-size: 14px; margin-bottom: 10px;}
+  .auth-links a {color: #4db8ff; text-decoration: none; font-size: 14px;}
+  .auth-links a:hover {text-decoration: underline;}
+  
   .error {color: #ff4444; font-size: 13px; margin-top: -10px; margin-bottom: 10px; display: none;}
   .success {color: #00ff88; font-size: 16px; margin: 10px 0; text-align: center; font-weight: 600; display: none;}
 </style>
@@ -35,6 +44,153 @@
   </div>
 
   <div class="input-group">
+    <span>📧</span>
+    <input type="email" id="email" placeholder="Enter your email">
+  </div>
+  <div class="error" id="emailError"></div>
+
+  <div class="input-group">
+    <span>🔒</span>
+    <input type="password" id="password" placeholder="Enter password">
+  </div>
+
+  <div class="input-group">
+    <span>🔒</span>
+    <input type="password" id="confirmPassword" placeholder="Confirm password">
+  </div>
+  <div class="error" id="passwordError"></div>
+
+  <button class="btn-register" id="registerBtn">Register</button>
+  <div class="success" id="successMsg"></div>
+
+  <!-- নতুন অংশ: Login আর Forgot Password -->
+  <div class="auth-links">
+    <p>Already have an account?</p>
+    <button class="btn-login" id="loginBtn">Login</button>
+    <p><a href="#" id="forgotPassLink">Forgot Password?</a></p>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD3i_ow0g3LSAPiF7FMFR4v0yMxgAAUN9o",
+    authDomain: "vediosreels-17b90.firebaseapp.com",
+    projectId: "vediosreels-17b90",
+    storageBucket: "vediosreels-17b90.firebasestorage.app",
+    messagingSenderId: "485226836797",
+    appId: "1:485226836797:web:8e459911429199b49ccb54"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Register
+  document.getElementById("registerBtn").addEventListener("click", async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const successMsg = document.getElementById("successMsg");
+    const btn = document.getElementById("registerBtn");
+
+    emailError.style.display = "none";
+    passwordError.style.display = "none";
+    successMsg.style.display = "none";
+
+    if(!email || !password || !confirmPassword){
+      passwordError.textContent = "Please fill all fields";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    if(password !== confirmPassword){
+      passwordError.textContent = "Passwords do not match";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    if(password.length < 6){
+      passwordError.textContent = "Password must be at least 6 characters";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Creating account...";
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      successMsg.textContent = "Registration Successful! You can now login.";
+      successMsg.style.display = "block";
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("confirmPassword").value = "";
+      document.getElementById("phone").value = "";
+    } catch (error) {
+      if(error.code.includes("email")) {
+        emailError.textContent = error.message;
+        emailError.style.display = "block";
+      } else {
+        passwordError.textContent = error.message;
+        passwordError.style.display = "block";
+      }
+    }
+    
+    btn.disabled = false;
+    btn.textContent = "Register";
+  });
+
+  // Login
+  document.getElementById("loginBtn").addEventListener("click", async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const passwordError = document.getElementById("passwordError");
+
+    if(!email || !password){
+      passwordError.textContent = "Enter email and password to login";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = "/VediosReels/index.html"; // লগইন হলে যেখানে যাবে
+    } catch (error) {
+      passwordError.textContent = error.message;
+      passwordError.style.display = "block";
+    }
+  });
+
+  // Forgot Password
+  document.getElementById("forgotPassLink").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const passwordError = document.getElementById("passwordError");
+
+    if(!email){
+      passwordError.textContent = "Enter your email first";
+      passwordError.style.display = "block";
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      passwordError.style.color = "#00ff88";
+      passwordError.textContent = "Password reset email sent! Check your inbox.";
+      passwordError.style.display = "block";
+      passwordError.style.color = "#ff4444"; // রিসেট করার জন্য আবার লাল করে দিলাম
+    } catch (error) {
+      passwordError.textContent = error.message;
+      passwordError.style.display = "block";
+    }
+  });
+</script>
+</body>
+</html>  <div class="input-group">
     <span>📧</span>
     <input type="email" id="email" placeholder="Enter your email">
   </div>
