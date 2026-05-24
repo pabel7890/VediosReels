@@ -217,15 +217,16 @@
     btn.textContent = "Creating account...";
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      successMsg.textContent = "Registration Successful! Now login.";
-      successMsg.style.display = "block";
-      setTimeout(() => {
-        registerForm.classList.add("hidden");
-        loginForm.classList.remove("hidden");
-        document.getElementById("loginEmail").value = email;
-      }, 1500);
-    } catch (error) {
+  await createUserWithEmailAndPassword(auth, email, password);
+  successMsg.textContent = "Registration Successful! Redirecting...";
+  successMsg.style.display = "block";
+  
+  // 1.5 সেকেন্ড পরে তোমার হোমপেজে রিডাইরেক্ট হবে
+  setTimeout(() => {
+    window.location.href = "https://vediosreels-e2df1.web.app";
+  }, 1500);
+  
+} catch (error) {
       if(error.code.includes("email")) {
         emailError.textContent = error.message;
         emailError.style.display = "block";
@@ -259,7 +260,7 @@
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      window.location.href = "/VediosReels/dashboard.html";
+      window.location.href = window.location.href = "https://vediosreels-e2df1.web.app";
     } catch (error) {
       loginError.textContent = error.message;
       loginError.style.display = "block";
