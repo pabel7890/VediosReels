@@ -1,3 +1,59 @@
-document.getElementById("rechargeBtn").onclick = () => {
-  window.location.href = "/recharge.html";
-}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manual Recharge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; padding: 20px; background: #111; color: white; text-align: center; }
+    .box { background: #222; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; }
+    input, button { width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 5px; box-sizing: border-box; }
+    button { background: #00c853; color: white; font-weight: bold; font-size: 16px; }
+    input { background: #333; color: white; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Manual Recharge</h2>
+    <p>Send money to this number:</p>
+    <h3 style="color:#00e676;">01712345678</h3>
+    <p>Send Bkash/Nagad, then enter details below:</p>
+    
+    <input type="number" id="amount" placeholder="Amount">
+    <input type="text" id="txid" placeholder="Transaction ID">
+    <button onclick="submitRecharge()">Submit Request</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.submitRecharge = async function() {
+      let amount = document.getElementById("amount").value;
+      let txid = document.getElementById("txid").value;
+      if(!amount || !txid) return alert("Please fill all fields");
+      
+      await addDoc(collection(db, "recharge_requests"), {
+        amount: Number(amount),
+        txid: txid,
+        status: "pending",
+        createdAt: new Date()
+      });
+      alert("Request submitted! Wait for admin approval.");
+      document.getElementById("amount").value = "";
+      document.getElementById("txid").value = "";
+    }
+  </script>
+</body>
+</html>
